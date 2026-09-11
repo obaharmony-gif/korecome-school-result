@@ -1,0 +1,1019 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>School Result Admin | Korecome Comprehensive College</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <div class="admin-layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+          <a class="brand" href="../index.html"
+            ><span class="brand-mark">K</span
+            ><span>KORECOME<small>RESULT MANAGEMENT</small></span></a
+          >
+          <button
+            class="sidebar-close"
+            id="sidebarClose"
+            aria-label="Close menu"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <nav class="side-nav">
+          <button data-view="dashboard" class="active">
+            <i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
+          </button>
+          <button data-view="students">
+            <i class="fa-solid fa-user-graduate"></i><span>Students</span>
+          </button>
+          <button data-view="classes">
+            <i class="fa-solid fa-school"></i><span>Classes</span>
+          </button>
+          <button data-view="subjects">
+            <i class="fa-solid fa-book-open"></i><span>Subjects</span>
+          </button>
+          <button data-view="class-subjects">
+            <i class="fa-solid fa-list-check"></i><span>Class Subjects</span>
+          </button>
+          <button data-view="teachers">
+            <i class="fa-solid fa-chalkboard-user"></i><span>Teachers</span>
+          </button>
+          <button data-view="results">
+            <i class="fa-solid fa-clipboard-check"></i>
+            <span>Enter Results</span>
+          </button>
+
+          <button data-view="broadsheet">
+            <i class="fa-solid fa-table"></i>
+            <span>Class Broadsheet</span>
+          </button>
+
+          <button data-view="submissions">
+            <i class="fa-solid fa-user-check"></i>
+            <span>Teacher Submissions</span>
+          </button>
+
+          <button data-view="pins">
+            <i class="fa-solid fa-key"></i><span>Result PINs</span>
+          </button>
+          <button data-view="settings">
+            <i class="fa-solid fa-gear"></i><span>Settings</span>
+          </button>
+          <a href="../results.html" target="_blank"
+            ><i class="fa-solid fa-arrow-up-right-from-square"></i
+            ><span>Open Result Checker</span></a
+          >
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="admin-chip">
+            <span class="avatar"><i class="fa-solid fa-user-shield"></i></span>
+            <div>
+              <strong id="sidebarAdmin">Administrator</strong
+              ><small>Authorized staff</small>
+            </div>
+          </div>
+          <button id="logout" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Log out
+          </button>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div>
+            <p class="eyebrow">Korecome Comprehensive College</p>
+            <h1 id="pageTitle">Dashboard</h1>
+            <p class="muted" id="adminName"></p>
+          </div>
+          <a class="topbar-link" href="../results.html" target="_blank"
+            ><i class="fa-solid fa-display"></i
+            ><span>Public Result Page</span></a
+          >
+        </header>
+
+        <div id="globalMsg" class="toast-area" aria-live="polite"></div>
+
+        <section id="dashboard" class="view active">
+          <div class="hero-panel">
+            <div>
+              <span class="pill">Result Administration</span>
+              <h2>
+                Manage students, scores and published results from one place.
+              </h2>
+              <p>
+                Use the modules below to keep academic records organized and
+                release results securely with private PINs.
+              </p>
+            </div>
+            <div class="hero-icon">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+          </div>
+
+          <div class="cards six">
+            <article class="card">
+              <div class="card-icon">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <div>
+                <small>Active Students</small
+                ><strong id="statStudents">0</strong>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-icon"><i class="fa-solid fa-school"></i></div>
+              <div>
+                <small>Classes</small><strong id="statClasses">0</strong>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-icon"><i class="fa-solid fa-book"></i></div>
+              <div>
+                <small>Subjects</small><strong id="statSubjects">0</strong>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-icon"><i class="fa-solid fa-file-pen"></i></div>
+              <div>
+                <small>Result Entries</small><strong id="statResults">0</strong>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-icon">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div>
+                <small>Published</small><strong id="statPublished">0</strong>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-icon"><i class="fa-solid fa-key"></i></div>
+              <div>
+                <small>Active PINs</small><strong id="statPins">0</strong>
+              </div>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Quick actions</span>
+                  <h2>Common tasks</h2>
+                </div>
+              </div>
+              <div class="quick-grid">
+                <button class="quick-action" data-jump="students">
+                  <i class="fa-solid fa-user-plus"></i
+                  ><span
+                    ><strong>Add a student</strong
+                    ><small>Register a learner and assign a class</small></span
+                  >
+                </button>
+                <button class="quick-action" data-jump="results">
+                  <i class="fa-solid fa-pen-to-square"></i
+                  ><span
+                    ><strong>Enter results</strong
+                    ><small>Record CA and examination scores</small></span
+                  >
+                </button>
+                <button class="quick-action" data-jump="pins">
+                  <i class="fa-solid fa-key"></i
+                  ><span
+                    ><strong>Generate PIN</strong
+                    ><small>Create secure result access</small></span
+                  >
+                </button>
+                <button class="quick-action" data-jump="classes">
+                  <i class="fa-solid fa-layer-group"></i
+                  ><span
+                    ><strong>Manage classes</strong
+                    ><small>Create or rename class groups</small></span
+                  ></button
+                ><button class="quick-action" data-jump="class-subjects">
+                  <i class="fa-solid fa-list-check"></i
+                  ><span
+                    ><strong>Arrange class subjects</strong
+                    ><small>Choose the subjects each class offers</small></span
+                  ></button
+                ><button class="quick-action" data-jump="teachers">
+                  <i class="fa-solid fa-chalkboard-user"></i
+                  ><span
+                    ><strong>Manage teachers</strong
+                    ><small
+                      >Create accounts and teaching assignments</small
+                    ></span
+                  >
+                </button>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Workflow</span>
+                  <h2>Recommended order</h2>
+                </div>
+              </div>
+              <ol class="workflow">
+                <li>
+                  <span>1</span>
+                  <div>
+                    <strong>Set up classes & subjects</strong
+                    ><small>Confirm all academic structures first.</small>
+                  </div>
+                </li>
+                <li>
+                  <span>2</span>
+                  <div>
+                    <strong>Register students</strong
+                    ><small>Assign each student to a class.</small>
+                  </div>
+                </li>
+                <li>
+                  <span>3</span>
+                  <div>
+                    <strong>Enter and review scores</strong
+                    ><small>CA is /40 and Exam is /60.</small>
+                  </div>
+                </li>
+                <li>
+                  <span>4</span>
+                  <div>
+                    <strong>Publish and issue PIN</strong
+                    ><small>Students can then check results privately.</small>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <section id="students" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">Student records</span>
+              <h2>Students</h2>
+              <p>Register, edit, activate or deactivate student records.</p>
+            </div>
+            <button id="openStudentForm" class="btn btn-primary">
+              <i class="fa-solid fa-user-plus"></i> Add Student
+            </button>
+          </div>
+
+          <div class="panel form-panel" id="studentFormPanel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-kicker">Student form</span>
+                <h2 id="studentFormTitle">Add Student</h2>
+              </div>
+              <button
+                type="button"
+                class="icon-btn"
+                id="cancelStudentEdit"
+                title="Reset form"
+              >
+                <i class="fa-solid fa-rotate-left"></i>
+              </button>
+            </div>
+            <form id="studentForm" class="form-grid">
+              <input type="hidden" id="studentId" />
+              <div class="field">
+                <label>Admission Number <span>*</span></label
+                ><input
+                  id="sAdmission"
+                  required
+                  placeholder="e.g. KCC/2026/001"
+                />
+              </div>
+              <div class="field">
+                <label>First Name <span>*</span></label
+                ><input id="sFirst" required />
+              </div>
+              <div class="field">
+                <label>Last Name <span>*</span></label
+                ><input id="sLast" required />
+              </div>
+              <div class="field">
+                <label>Other Name</label><input id="sOther" />
+              </div>
+              <div class="field">
+                <label>Gender</label
+                ><select id="sGender">
+                  <option value="">Select gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Class <span>*</span></label
+                ><select id="sClass" required>
+                  <option value="">Select class</option>
+                </select>
+              </div>
+              <div class="form-actions">
+                <button class="btn btn-primary" id="saveStudent">
+                  <i class="fa-solid fa-floppy-disk"></i> Save Student</button
+                ><button
+                  type="button"
+                  class="btn btn-light"
+                  id="resetStudentForm"
+                >
+                  Clear
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head responsive">
+              <div>
+                <span class="panel-kicker">Directory</span>
+                <h2>Student List</h2>
+              </div>
+              <div class="toolbar">
+                <div class="searchbox">
+                  <i class="fa-solid fa-magnifying-glass"></i
+                  ><input
+                    id="studentSearch"
+                    placeholder="Search name or admission number"
+                  />
+                </div>
+                <button id="searchStudents" class="btn btn-light">
+                  Search
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Admission No.</th>
+                    <th>Student</th>
+                    <th>Class</th>
+                    <th>Gender</th>
+                    <th>Status</th>
+                    <th class="actions-col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="classes" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">Academic structure</span>
+              <h2>Classes</h2>
+              <p>
+                Create and manage classes. Student membership is controlled
+                here.
+              </p>
+            </div>
+          </div>
+          <div class="manage-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Class form</span>
+                  <h2 id="classFormTitle">Add Class</h2>
+                </div>
+              </div>
+              <form id="classForm">
+                <input type="hidden" id="classId" />
+                <div class="field">
+                  <label>Class Name <span>*</span></label
+                  ><input id="className" required placeholder="e.g. JSS 1A" />
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" id="saveClass">
+                    Save Class</button
+                  ><button
+                    type="button"
+                    class="btn btn-light"
+                    id="cancelClassEdit"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Available classes</span>
+                  <h2>Class List</h2>
+                </div>
+                <button id="refreshClasses" class="icon-btn" title="Refresh">
+                  <i class="fa-solid fa-rotate"></i>
+                </button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Class</th>
+                      <th>Active Students</th>
+                      <th class="actions-col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="classRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="class-subjects" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">Curriculum setup</span>
+              <h2>Class Subject Arrangement</h2>
+              <p>
+                Choose exactly which subjects each class offers. Every active
+                student in the class will use this subject list.
+              </p>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="result-filters">
+              <div class="field">
+                <label>Class</label
+                ><select id="arrangementClass"></select>
+              </div>
+              <button id="loadArrangement" class="btn btn-navy">
+                <i class="fa-solid fa-list-check"></i> Load Subjects
+              </button>
+            </div>
+          </div>
+          <div class="panel" id="arrangementPanel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-kicker">Subjects offered</span>
+                <h2 id="arrangementTitle">Select a class</h2>
+              </div>
+              <span id="arrangementCount" class="status-badge neutral"
+                >0 selected</span
+              >
+            </div>
+            <div id="arrangementList" class="subject-check-grid">
+              <div class="empty-state">
+                <i class="fa-solid fa-list-check"></i>
+                <h3>No class selected</h3>
+                <p>Select a class to arrange its subjects.</p>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button id="saveArrangement" class="btn btn-primary" disabled>
+                <i class="fa-solid fa-floppy-disk"></i> Save Class Subject
+                Arrangement
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section id="subjects" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">Academic structure</span>
+              <h2>Subjects</h2>
+              <p>
+                Create subjects and optional short codes used on result sheets.
+              </p>
+            </div>
+          </div>
+          <div class="manage-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Subject form</span>
+                  <h2 id="subjectFormTitle">Add Subject</h2>
+                </div>
+              </div>
+              <form id="subjectForm">
+                <input type="hidden" id="subjectId" />
+                <div class="field">
+                  <label>Subject Name <span>*</span></label
+                  ><input
+                    id="subjectName"
+                    required
+                    placeholder="e.g. Geography"
+                  />
+                </div>
+                <div class="field">
+                  <label>Subject Code</label
+                  ><input
+                    id="subjectCode"
+                    maxlength="20"
+                    placeholder="e.g. GEO"
+                  />
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" id="saveSubject">
+                    Save Subject</button
+                  ><button
+                    type="button"
+                    class="btn btn-light"
+                    id="cancelSubjectEdit"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Available subjects</span>
+                  <h2>Subject List</h2>
+                </div>
+                <button id="refreshSubjects" class="icon-btn" title="Refresh">
+                  <i class="fa-solid fa-rotate"></i>
+                </button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Subject</th>
+                      <th>Code</th>
+                      <th>Result Records</th>
+                      <th class="actions-col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="subjectRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="teachers" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">Staff access</span>
+              <h2>Subject Teachers</h2>
+              <p>
+                Create teacher accounts and assign each teacher to one or more
+                subject/class combinations.
+              </p>
+            </div>
+          </div>
+          <div class="manage-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Teacher account</span>
+                  <h2 id="teacherFormTitle">Add Teacher</h2>
+                </div>
+              </div>
+              <form id="teacherForm">
+                <input type="hidden" id="teacherId" />
+                <div class="field">
+                  <label>Full Name <span>*</span></label
+                  ><input
+                    id="teacherName"
+                    required
+                    placeholder="e.g. Mr. John Ade"
+                  />
+                </div>
+                <div class="field">
+                  <label>Username <span>*</span></label
+                  ><input
+                    id="teacherUsername"
+                    required
+                    placeholder="e.g. john.math"
+                  />
+                </div>
+                <div class="field">
+                  <label>Password <span>*</span></label
+                  ><input
+                    id="teacherPassword"
+                    type="password"
+                    minlength="8"
+                    placeholder="Minimum 8 characters"
+                  />
+                </div>
+                <div class="field">
+                  <label>Email</label><input id="teacherEmail" type="email" />
+                </div>
+                <div class="field">
+                  <label>Phone</label><input id="teacherPhone" />
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" id="saveTeacher">
+                    Create Teacher</button
+                  ><button
+                    type="button"
+                    class="btn btn-light"
+                    id="cancelTeacherEdit"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Teacher directory</span>
+                  <h2>Teacher Accounts</h2>
+                </div>
+                <button id="refreshTeachers" class="icon-btn">
+                  <i class="fa-solid fa-rotate"></i>
+                </button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Teacher</th>
+                      <th>Username</th>
+                      <th>Assignments</th>
+                      <th>Status</th>
+                      <th class="actions-col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="teacherRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-kicker">Teaching allocation</span>
+                <h2>Assign Subject + Class</h2>
+                <p>
+                  A teacher can have many assignments. A class subject must be
+                  arranged first.
+                </p>
+              </div>
+            </div>
+            <form id="assignmentForm" class="form-grid compact-form">
+              <div class="field">
+                <label>Teacher</label
+                ><select id="assignmentTeacher" required></select>
+              </div>
+              <div class="field">
+                <label>Subject</label
+                ><select id="assignmentSubject" required></select>
+              </div>
+              <div class="field">
+                <label>Class</label
+                ><select id="assignmentClass" required></select>
+              </div>
+              <div class="form-actions">
+                <button class="btn btn-primary">Assign Teacher</button>
+              </div>
+            </form>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Teacher</th>
+                    <th>Subject</th>
+                    <th>Class</th>
+                    <th class="actions-col">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="assignmentRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="results" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">Academic records</span>
+              <h2>Enter Results</h2>
+              <p>
+                Select a student and academic period. Only subjects offered by
+                that student’s class will appear.
+              </p>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="result-filters">
+              <div class="field">
+                <label>Student</label
+                ><select id="rStudent"></select>
+              </div>
+              <div class="field">
+                <label>Session</label
+                ><select id="rSession"></select>
+              </div>
+              <div class="field">
+                <label>Term</label
+                ><select id="rTerm"></select>
+              </div>
+              <button id="loadResult" class="btn btn-navy">
+                <i class="fa-solid fa-table-list"></i> Load Result Sheet
+              </button>
+            </div>
+          </div>
+          <div class="panel result-editor-panel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-kicker">Score sheet</span>
+                <h2 id="resultEditorTitle">Result Sheet</h2>
+              </div>
+              <span id="publishBadge" class="status-badge neutral"
+                >Not loaded</span
+              >
+            </div>
+            <div id="resultEditor" class="empty-state">
+              <i class="fa-solid fa-clipboard-list"></i>
+              <h3>No result sheet loaded</h3>
+              <p>
+                Select a student, session and term, then click “Load Result
+                Sheet”.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="broadsheet" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">Academic records</span>
+              <h2>Class Broadsheet</h2>
+              <p>View the complete result broadsheet for a class.</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="result-filters">
+              <div class="field">
+                <label>Class</label>
+                <select id="bClass">
+                  <option value="">Select Class</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Session</label>
+                <select id="bSession">
+                  <option value="">Select Session</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Term</label>
+                <select id="bTerm">
+                  <option value="">Select Term</option>
+                </select>
+              </div>
+
+              <button id="loadBroadsheet" class="btn btn-navy">
+                <i class="fa-solid fa-table"></i>
+                Load Broadsheet
+              </button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-kicker">Broadsheet</span>
+                <h2 id="broadsheetTitle">Select a class</h2>
+              </div>
+
+              <span id="broadsheetStatus" class="status-badge neutral">
+                Not loaded
+              </span>
+            </div>
+
+            <div class="table-wrap">
+              <div id="broadsheetTable"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="submissions" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">Result workflow</span>
+              <h2>Teacher Submissions</h2>
+              <p>Track teacher result entry and submission progress.</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="result-filters">
+              <div class="field">
+                <label>Session</label>
+                <select id="tSession">
+                  <option value="">Select Session</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Term</label>
+                <select id="tTerm">
+                  <option value="">Select Term</option>
+                </select>
+              </div>
+
+              <button id="loadSubmissions" class="btn btn-navy">
+                <i class="fa-solid fa-rotate"></i>
+                Load Submissions
+              </button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Teacher</th>
+                    <th>Username</th>
+                    <th>Subject</th>
+                    <th>Class</th>
+                    <th>Students</th>
+                    <th>Entered</th>
+                    <th>Submitted</th>
+                    <th>Published</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody id="submissionRows">
+                  <tr>
+                    <td colspan="9">No data loaded.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="pins" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">Secure access</span>
+              <h2>Result PINs</h2>
+              <p>
+                Generate one private PIN for each student, session and term.
+              </p>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="pin-generator">
+              <div class="field">
+                <label>Student</label
+                ><select id="pStudent"></select>
+              </div>
+              <div class="field">
+                <label>Session</label
+                ><select id="pSession"></select>
+              </div>
+              <div class="field">
+                <label>Term</label
+                ><select id="pTerm"></select>
+              </div>
+              <button id="generatePin" class="btn btn-primary">
+                <i class="fa-solid fa-key"></i> Generate / Replace PIN
+              </button>
+            </div>
+            <div id="newPin"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head responsive">
+              <div>
+                <span class="panel-kicker">Issued credentials</span>
+                <h2>PIN Register</h2>
+              </div>
+              <button id="refreshPins" class="btn btn-light">
+                <i class="fa-solid fa-rotate"></i> Refresh
+              </button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Admission</th>
+                    <th>Session</th>
+                    <th>Term</th>
+                    <th>PIN</th>
+                    <th>Uses</th>
+                    <th>Status</th>
+                    <th class="actions-col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="pinRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="settings" class="view">
+          <div class="section-head">
+            <div>
+              <span class="panel-kicker">System settings</span>
+              <h2>Settings</h2>
+              <p>
+                Manage academic sessions and protect the administrator account.
+              </p>
+            </div>
+          </div>
+          <div class="settings-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Academic sessions</span>
+                  <h2>Sessions</h2>
+                </div>
+              </div>
+              <form id="sessionForm" class="inline-form">
+                <div class="field">
+                  <label>New Session</label
+                  ><input id="sessionName" placeholder="2026/2027" />
+                </div>
+                <button class="btn btn-primary">Add Session</button>
+              </form>
+              <div class="table-wrap compact">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Session</th>
+                      <th>Status</th>
+                      <th class="actions-col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sessionRows"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="panel-kicker">Security</span>
+                  <h2>Change Admin Password</h2>
+                </div>
+              </div>
+              <form id="passwordForm">
+                <div class="field">
+                  <label>Current Password</label
+                  ><input
+                    id="currentPassword"
+                    type="password"
+                    required
+                    autocomplete="current-password"
+                  />
+                </div>
+                <div class="field">
+                  <label>New Password</label
+                  ><input
+                    id="newPassword"
+                    type="password"
+                    minlength="8"
+                    required
+                    autocomplete="new-password"
+                  />
+                </div>
+                <div class="field">
+                  <label>Confirm New Password</label
+                  ><input
+                    id="confirmPassword"
+                    type="password"
+                    minlength="8"
+                    required
+                    autocomplete="new-password"
+                  />
+                </div>
+                <button class="btn btn-navy">
+                  <i class="fa-solid fa-lock"></i> Change Password
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <script src="admin.js"></script>
+  </body>
+</html>

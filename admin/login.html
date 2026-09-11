@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Login | Korecome Comprehensive College</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="login-page">
+  <section class="login-visual">
+    <div class="login-copy">
+      <span class="pill">Staff Portal</span>
+      <h2>Academic result management, made simple.</h2>
+      <p>Securely manage students, classes, subjects, result entries, publishing and private result PINs.</p>
+    </div>
+  </section>
+
+  <section class="login-shell">
+    <form id="loginForm" class="login-card">
+      <a class="brand" href="../index.html"><span class="brand-mark">K</span><span>KORECOME<small>COMPREHENSIVE COLLEGE</small></span></a>
+      <span class="panel-kicker">Authorized access</span>
+      <h1>Admin Login</h1>
+      <p class="muted">Sign in with your administrator account.</p>
+      <div id="msg" aria-live="polite"></div>
+
+      <div class="field"><label>Username</label><input id="username" required autocomplete="username" placeholder="Enter username"></div>
+      <div class="field password-wrap"><label>Password</label><input id="password" type="password" required autocomplete="current-password" placeholder="Enter password"><button type="button" class="password-toggle" id="togglePassword" aria-label="Show password"><i class="fa-regular fa-eye"></i></button></div>
+      <button class="btn btn-primary" id="loginButton" type="submit"><i class="fa-solid fa-right-to-bracket"></i><span>Sign In</span></button>
+      <a class="back-link" href="../results.html"><i class="fa-solid fa-arrow-left"></i> Back to Result Checker</a>
+    </form>
+  </section>
+
+<script>
+const form = document.getElementById('loginForm');
+const msg = document.getElementById('msg');
+const button = document.getElementById('loginButton');
+const password = document.getElementById('password');
+document.getElementById('togglePassword').onclick = () => {
+  password.type = password.type === 'password' ? 'text' : 'password';
+};
+form.onsubmit = async (event) => {
+  event.preventDefault();
+  msg.innerHTML = '';
+  button.disabled = true;
+  button.querySelector('span').textContent = 'Signing in...';
+  try {
+    const response = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({username: document.getElementById('username').value.trim(), password: password.value})
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || 'Unable to sign in.');
+    location.href = 'dashboard.html';
+  } catch (error) {
+    const safe = String(error.message).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    msg.innerHTML = `<div class="msg error">${safe}</div>`;
+  } finally {
+    button.disabled = false;
+    button.querySelector('span').textContent = 'Sign In';
+  }
+};
+</script>
+</body>
+</html>

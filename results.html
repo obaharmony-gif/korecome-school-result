@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Result | Korecome Comprehensive College</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="results.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container nav-container">
+        <a href="index.html" class="logo"
+          ><div class="logo-mark">K</div>
+          <div class="logo-text">
+            <strong>KORECOME</strong><span>COMPREHENSIVE COLLEGE</span>
+          </div></a
+        >
+        <nav class="navbar">
+          <a href="index.html">Home</a><a href="about.html">About</a
+          ><a href="academics.html">Academics</a
+          ><a class="active" href="results.html">Check Result</a>
+        </nav>
+      </div>
+    </header>
+    <main class="result-page">
+      <section class="result-hero">
+        <div class="container result-layout">
+          <div class="result-intro">
+            <span class="section-label">STUDENT PORTAL</span>
+            <h1>Check your <span>school result.</span></h1>
+            <p>
+              Enter your phone number and result PIN, then select the academic
+              session and term.
+            </p>
+            <div class="security-note">
+              <i class="fa-solid fa-shield-halved"></i>
+              <div>
+                <strong>Your result is private</strong>
+                <p>
+                  Only students with a valid phone number and PIN can access
+                  published results.
+                </p>
+              </div>
+            </div>
+          </div>
+          <form id="resultForm" class="result-card">
+            <h2>Result Checker</h2>
+            <p class="muted">All fields are required.</p>
+            <div id="formMessage"></div>
+            <label
+              >Phone Number<input
+                id="phone_number"
+                autocomplete="username"
+                required
+                placeholder="e.g. 08076543212"
+            /></label>
+            <label
+              >Result PIN
+              <div class="pin-wrap">
+                <input
+                  id="pin"
+                  type="password"
+                  inputmode="numeric"
+                  required
+                  placeholder="Enter result PIN"
+                /><button type="button" id="togglePin" aria-label="Show PIN">
+                  <i class="fa-regular fa-eye"></i>
+                </button></div
+            ></label>
+            <div class="two-fields">
+              <label
+                >Session<select id="session_id" required>
+                  <option value="">Select session</option>
+                </select></label
+              >
+              <label
+                >Term<select id="term_id" required>
+                  <option value="">Select term</option>
+                </select></label
+              >
+            </div>
+            <button class="check-btn" type="submit">
+              <span>Check Result</span><i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <a class="admin-link" href="admin/login.html"
+              ><i class="fa-solid fa-lock"></i> Staff / Admin Login</a
+            >
+          </form>
+        </div>
+      </section>
+      <section
+        id="resultSection"
+        class="container result-output hidden"
+      ></section>
+    </main>
+    <script src="results.js"></script>
+  </body>
+</html>
