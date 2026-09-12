@@ -285,11 +285,9 @@ app.post("/api/result/check", async (req, res) => {
     const termId = Number(req.body.term_id || 0);
 
     if (!admission || !pin || !sessionId || !termId) {
-      return res
-        .status(400)
-        .json({
-          error: "Admission number, PIN, session and term are required.",
-        });
+      return res.status(400).json({
+        error: "Admission number, PIN, session and term are required.",
+      });
     }
 
     const [[token]] = await pool.query(
@@ -304,12 +302,10 @@ app.post("/api/result/check", async (req, res) => {
     );
 
     if (!token) {
-      return res
-        .status(404)
-        .json({
-          error:
-            "No result found. Check the admission number, PIN, session and term.",
-        });
+      return res.status(404).json({
+        error:
+          "No result found. Check the admission number, PIN, session and term.",
+      });
     }
 
     const [rows] = await pool.query(
@@ -496,12 +492,10 @@ app.post("/api/admin/students", auth, async (req, res) => {
     const classId = Number(req.body.class_id || 0);
 
     if (!admission || !first || !last || !classId) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Admission number, first name, last name and class are required.",
-        });
+      return res.status(400).json({
+        error:
+          "Admission number, first name, last name and class are required.",
+      });
     }
 
     const [result] = await pool.query(
@@ -537,12 +531,10 @@ app.put("/api/admin/students/:id", auth, async (req, res) => {
 
     if (!id) return res.status(400).json({ error: "Invalid student ID." });
     if (!admission || !first || !last || !classId) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Admission number, first name, last name and class are required.",
-        });
+      return res.status(400).json({
+        error:
+          "Admission number, first name, last name and class are required.",
+      });
     }
 
     const [result] = await pool.query(
@@ -671,12 +663,10 @@ app.delete("/api/admin/classes/:id", auth, async (req, res) => {
       [id],
     );
     if (Number(students.n) > 0) {
-      return res
-        .status(409)
-        .json({
-          error:
-            "This class cannot be deleted because students are assigned to it.",
-        });
+      return res.status(409).json({
+        error:
+          "This class cannot be deleted because students are assigned to it.",
+      });
     }
     const [result] = await pool.query("DELETE FROM classes WHERE id=?", [id]);
     if (!result.affectedRows)
@@ -761,12 +751,10 @@ app.delete("/api/admin/subjects/:id", auth, async (req, res) => {
       [id],
     );
     if (Number(results.n) > 0) {
-      return res
-        .status(409)
-        .json({
-          error:
-            "This subject cannot be deleted because result records already use it.",
-        });
+      return res.status(409).json({
+        error:
+          "This subject cannot be deleted because result records already use it.",
+      });
     }
     const [result] = await pool.query("DELETE FROM subjects WHERE id=?", [id]);
     if (!result.affectedRows)
@@ -849,12 +837,10 @@ app.post("/api/admin/teachers", auth, async (req, res) => {
     const email = String(req.body.email || "").trim();
     const phone = String(req.body.phone || "").trim();
     if (!username || !fullName || password.length < 8)
-      return res
-        .status(400)
-        .json({
-          error:
-            "Username, full name and a password of at least 8 characters are required.",
-        });
+      return res.status(400).json({
+        error:
+          "Username, full name and a password of at least 8 characters are required.",
+      });
     const [result] = await pool.query(
       "INSERT INTO teachers (username,full_name,email,phone,password_hash,active) VALUES (?,?,?,?,?,1)",
       [
@@ -867,14 +853,12 @@ app.post("/api/admin/teachers", auth, async (req, res) => {
     );
     res.status(201).json({ ok: true, id: result.insertId });
   } catch (error) {
-    res
-      .status(error.code === "ER_DUP_ENTRY" ? 409 : 500)
-      .json({
-        error: duplicateMessage(
-          error,
-          "A teacher with this username already exists.",
-        ),
-      });
+    res.status(error.code === "ER_DUP_ENTRY" ? 409 : 500).json({
+      error: duplicateMessage(
+        error,
+        "A teacher with this username already exists.",
+      ),
+    });
   }
 });
 
@@ -914,14 +898,12 @@ app.put("/api/admin/teachers/:id", auth, async (req, res) => {
       return res.status(404).json({ error: "Teacher not found." });
     res.json({ ok: true });
   } catch (error) {
-    res
-      .status(error.code === "ER_DUP_ENTRY" ? 409 : 500)
-      .json({
-        error: duplicateMessage(
-          error,
-          "Another teacher already uses this username.",
-        ),
-      });
+    res.status(error.code === "ER_DUP_ENTRY" ? 409 : 500).json({
+      error: duplicateMessage(
+        error,
+        "Another teacher already uses this username.",
+      ),
+    });
   }
 });
 
@@ -965,26 +947,22 @@ app.post("/api/admin/teacher-assignments", auth, async (req, res) => {
       [classId, subjectId],
     );
     if (!offered)
-      return res
-        .status(400)
-        .json({
-          error:
-            "Add this subject to the class subject arrangement before assigning a teacher.",
-        });
+      return res.status(400).json({
+        error:
+          "Add this subject to the class subject arrangement before assigning a teacher.",
+      });
     const [r] = await pool.query(
       "INSERT INTO teacher_assignments (teacher_id,subject_id,class_id,active) VALUES (?,?,?,1)",
       [teacherId, subjectId, classId],
     );
     res.status(201).json({ ok: true, id: r.insertId });
   } catch (error) {
-    res
-      .status(error.code === "ER_DUP_ENTRY" ? 409 : 500)
-      .json({
-        error: duplicateMessage(
-          error,
-          "This teacher is already assigned to that subject and class.",
-        ),
-      });
+    res.status(error.code === "ER_DUP_ENTRY" ? 409 : 500).json({
+      error: duplicateMessage(
+        error,
+        "This teacher is already assigned to that subject and class.",
+      ),
+    });
   }
 });
 app.delete("/api/admin/teacher-assignments/:id", auth, async (req, res) => {
@@ -1184,11 +1162,9 @@ app.post("/api/admin/sessions", auth, async (req, res) => {
   try {
     const name = String(req.body.name || "").trim();
     if (!/^\d{4}\/\d{4}$/.test(name))
-      return res
-        .status(400)
-        .json({
-          error: "Use session format YYYY/YYYY, for example 2026/2027.",
-        });
+      return res.status(400).json({
+        error: "Use session format YYYY/YYYY, for example 2026/2027.",
+      });
     const [result] = await pool.query(
       "INSERT INTO academic_sessions (name,active) VALUES (?,1)",
       [name],
@@ -1563,13 +1539,11 @@ app.get("/admin", (_req, res) => res.redirect("/admin/login.html"));
 
 // API 404 must be after all API routes.
 app.use("/api", (req, res) => {
-  res
-    .status(404)
-    .json({
-      error: "API route not found.",
-      method: req.method,
-      path: req.originalUrl,
-    });
+  res.status(404).json({
+    error: "API route not found.",
+    method: req.method,
+    path: req.originalUrl,
+  });
 });
 
 app.use((error, _req, res, _next) => {
@@ -1582,21 +1556,27 @@ async function startServer() {
     await pool.query("SELECT 1");
     await ensureStructure();
     await ensureAdmin();
-    app.listen(PORT, () => {
-      console.log("Database connection successful.");
-      console.log(`Korecome website running on http://localhost:${PORT}`);
-      console.log(`Admin dashboard: http://localhost:${PORT}/admin/`);
-      console.log("Class API loaded: GET /api/admin/classes");
-      console.log("Subject API loaded: GET /api/admin/subjects");
-      console.log("Teacher portal: http://localhost:" + PORT + "/teacher/");
-      console.log(
-        "Class Subject API loaded: /api/admin/class-subjects/:classId",
-      );
-    });
+
+    if (!process.env.VERCEL) {
+      app.listen(PORT, () => {
+        console.log("Database connection successful.");
+        console.log(`Korecome website running on http://localhost:${PORT}`);
+        console.log(`Admin dashboard: http://localhost:${PORT}/admin/`);
+        console.log("Class API loaded: GET /api/admin/classes");
+        console.log("Subject API loaded: GET /api/admin/subjects");
+        console.log("Teacher portal: http://localhost:" + PORT + "/teacher/");
+        console.log(
+          "Class Subject API loaded: /api/admin/class-subjects/:classId",
+        );
+      });
+    }
   } catch (error) {
-    console.error("FAILED TO START SERVER:", error.message);
-    process.exit(1);
+    console.error("FAILED TO START SERVER:", error);
+    if (!process.env.VERCEL) process.exit(1);
   }
 }
 
 startServer();
+
+module.exports = app;
+module.exports = app;
