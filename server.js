@@ -1577,6 +1577,41 @@ async function startServer() {
 }
 
 startServer();
+async function startServer() {
+  try {
+    await pool.query("SELECT 1");
+    await ensureStructure();
+    await ensureAdmin();
 
+    if (!process.env.VERCEL) {
+      app.listen(PORT, () => {
+        console.log("Database connection successful.");
+        console.log(`Korecome website running on http://localhost:${PORT}`);
+        console.log(`Admin dashboard: http://localhost:${PORT}/admin/`);
+        console.log("Class API loaded: GET /api/admin/classes");
+        console.log("Subject API loaded: GET /api/admin/subjects");
+        console.log("Teacher portal: http://localhost:" + PORT + "/teacher/");
+        console.log(
+          "Class Subject API loaded: /api/admin/class-subjects/:classId",
+        );
+      });
+    }
+  } catch (error) {
+    console.error("FAILED TO START SERVER:", error);
+
+    if (!process.env.VERCEL) {
+      process.exit(1);
+    }
+
+    throw error;
+  }
+}
+
+const serverReady = startServer();
+
+module.exports = async (req, res) => {
+  await serverReady;
+  return app(req, res);
+};
 module.exports = app;
 module.exports = app;
