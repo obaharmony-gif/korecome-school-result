@@ -31,7 +31,9 @@ const pool = mysql.createPool({
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
-
+app.get("/", (_req, res) => {
+  res.sendFile(path.join(__dirname, "home.html"));
+});
 // ------------------------------------------------------------
 // Helpers
 // ------------------------------------------------------------
